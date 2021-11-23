@@ -6,14 +6,13 @@ import (
 
 func TestNew(t *testing.T) {
 	_, err := New(0)
-	if err != nil {
-		// t.Fatal("error required but got nil")
-		t.Fatal("error does not expected")
+	if err == nil {
+		t.Fatal("error required but got nil: empty id is not allowed")
 	}
 
 	_, err = New(-1)
 	if err == nil {
-		t.Fatal("error required but got nil")
+		t.Fatal("error required but got nil: negative id is not allowed")
 	}
 
 	foo, err := New(42)
