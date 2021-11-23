@@ -2,7 +2,7 @@ name: Build an Image
 
 on:
   push:
-    branches: [$default-branch]
+    branches: [ main ]
 
 jobs:
   build:
