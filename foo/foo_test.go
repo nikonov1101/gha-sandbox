@@ -6,8 +6,9 @@ import (
 
 func TestNew(t *testing.T) {
 	_, err := New(0)
-	if err == nil {
-		t.Fatal("error required but got nil")
+	if err != nil {
+		// t.Fatal("error required but got nil")
+		t.Fatal("error does not expected")
 	}
 
 	_, err = New(-1)
