@@ -1,0 +1,35 @@
+on: workflow_dispatch
+#    inputs:
+#      image_tag:
+#        description: "tag for the test image, leave empty for ver-commit"
+
+jobs:
+  build_image:
+    name: "build image"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=TAG_VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - name: login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: debug
+        run: |
+          echo "sha: ${{ github.sha }}"
+          echo "ref: ${{ github.ref }}"
+          echo "ver: ${{ steps.get_version.outputs.TAG_VERSION }}"
+#
+#      - name: build and push latest image
+#        uses: docker/build-push-action@v2
+#        with:
+#          context: .
+#          file: buildme/Dockerfile
+#          push: true
+#          tags: sshaman1101/fooer:${{ steps.get_version.outputs.TAG_VERSION }}
