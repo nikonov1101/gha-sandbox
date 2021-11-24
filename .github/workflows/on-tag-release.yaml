@@ -26,5 +26,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
+          file: buildme/Dockerfile
           push: true
           tags: sshaman1101/fooer:${{ steps.get_version.outputs.TAG_VERSION }}
