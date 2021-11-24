@@ -1,4 +1,4 @@
-name: Build an image
+name: "on merge: build the main branch"
 
 on:
   push:

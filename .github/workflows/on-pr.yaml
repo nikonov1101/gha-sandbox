@@ -1,4 +1,4 @@
-name: Test PRs
+name: "on PR: run tests"
 
 on:
   pull_request:

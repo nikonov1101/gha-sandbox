@@ -1,4 +1,4 @@
-name: Build and push testing images
+name: "Manually: build testing images"
 
 on: workflow_dispatch
 
