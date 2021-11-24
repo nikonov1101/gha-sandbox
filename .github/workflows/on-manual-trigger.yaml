@@ -1,6 +1,9 @@
 name: "Manually: build testing images"
 
-on: workflow_dispatch
+# on: workflow_dispatch
+on:
+  pull_request_target:
+    types: [assigned, opened, synchronize, reopened]
 
 jobs:
   build_image:
