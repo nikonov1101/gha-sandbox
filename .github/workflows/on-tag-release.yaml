@@ -1,4 +1,4 @@
-name: Build the release image
+name: "on release: build the main with tags"
 
 on:
   push:

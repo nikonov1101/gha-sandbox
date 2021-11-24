@@ -1,7 +1,6 @@
+name: "Manually: build testing images"
+
 on: workflow_dispatch
-#    inputs:
-#      image_tag:
-#        description: "tag for the test image, leave empty for ver-commit"
 
 jobs:
   build_image:
@@ -10,9 +9,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Get the version
-        id: get_version
-        run: echo ::set-output name=TAG_VERSION::${GITHUB_REF/refs\/tags\//}
+      - name: Cleanup the ref name
+        # turns "refs/heads/fix/the-short-name" into
+        # the docker-tag-friendly "fix-the-short-name".
+        run: echo "GITHUB_REF_SHORT=$(echo $GITHUB_REF | sed -e 's/refs\/heads\///' -e 's/\//-/')" >> $GITHUB_ENV
 
       - name: login to DockerHub
         uses: docker/login-action@v1
@@ -20,16 +20,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: debug
-        run: |
-          echo "sha: ${{ github.sha }}"
-          echo "ref: ${{ github.ref }}"
-          echo "ver: ${{ steps.get_version.outputs.TAG_VERSION }}"
-#
-#      - name: build and push latest image
-#        uses: docker/build-push-action@v2
-#        with:
-#          context: .
-#          file: buildme/Dockerfile
-#          push: true
-#          tags: sshaman1101/fooer:${{ steps.get_version.outputs.TAG_VERSION }}
+      - name: build and push latest image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: buildme/Dockerfile
+          push: true
+          tags: sshaman1101/fooer:${{ env.GITHUB_REF_SHORT }}
