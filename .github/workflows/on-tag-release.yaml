@@ -28,4 +28,6 @@ jobs:
           context: .
           file: buildme/Dockerfile
           push: true
-          tags: sshaman1101/fooer:${{ steps.get_version.outputs.TAG_VERSION }}
+          tags:
+            - "sshaman1101/fooer:stable"
+            - "sshaman1101/fooer:${{ steps.get_version.outputs.TAG_VERSION }}"
