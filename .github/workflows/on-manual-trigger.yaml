@@ -1,7 +1,6 @@
+name: Build and push testing images
+
 on: workflow_dispatch
-#    inputs:
-#      image_tag:
-#        description: "tag for the test image, leave empty for ver-commit"
 
 jobs:
   build_image:
@@ -10,21 +9,21 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Get the version
-        id: get_version
-        run: echo ::set-output name=TAG_VERSION::${GITHUB_REF/refs\/tags\//}
-
-      - name: login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Cleanup the ref name
+        run: echo "GITHUB_REF_SHORT=$(echo $GITHUB_REF | sed -e 's/refs\/heads\///' -e 's/\//-/')" >>
 
       - name: debug
         run: |
           echo "sha: ${{ github.sha }}"
           echo "ref: ${{ github.ref }}"
-          echo "ver: ${{ steps.get_version.outputs.TAG_VERSION }}"
+          echo "shortref: ${{ env.GITHUB_REF_SHORT }}"
+
+#      - name: login to DockerHub
+#        uses: docker/login-action@v1
+#        with:
+#          username: ${{ secrets.DOCKERHUB_USERNAME }}
+#          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
 #
 #      - name: build and push latest image
 #        uses: docker/build-push-action@v2
